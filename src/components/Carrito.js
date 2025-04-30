@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 const Carrito = () => {
   const { cart, dispatch } = useCart();
   const [visible, setVisible] = useState(false);
+
   const toggleCarrito = () => setVisible(!visible);
 
   const aumentarCantidad = (id) => {
@@ -14,6 +15,9 @@ const Carrito = () => {
   };
   const eliminarProducto = (id) => {
     dispatch({ type: 'ELIMINAR_PRODUCTO', payload: { id } });
+  };
+  const vaciarCarrito = () => {
+    dispatch({ type: 'VACIAR_CARRITO' });
   };
 
   const total = cart.reduce((acc, producto) => acc + producto.precio * producto.quantity, 0);
@@ -29,6 +33,7 @@ const Carrito = () => {
       {(visible || window.innerWidth >= 768) && (
         <>
           <h2 className="text-2xl font-bold mb-4 text-gray-800">Carrito</h2>
+
           {cart.length === 0 ? (
             <p className="text-gray-500">El carrito está vacío.</p>
           ) : (
@@ -39,8 +44,12 @@ const Carrito = () => {
                     <img src={producto.imagen} alt={producto.nombre} className="w-12 h-12 rounded object-cover" />
                     <div>
                       <h3 className="font-medium text-gray-700">{producto.nombre}</h3>
-                      <span className="text-sm text-gray-400">${producto.precio} x {producto.quantity}</span>
-                      <div className="text-xs text-gray-500">Subtotal: ${producto.precio * producto.quantity}</div>
+                      <span className="text-sm text-gray-400">
+                        ${producto.precio} x {producto.quantity}
+                      </span>
+                      <div className="text-xs text-gray-500">
+                        Subtotal: ${producto.precio * producto.quantity}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -61,6 +70,14 @@ const Carrito = () => {
                 </li>
               ))}
             </ul>
+          )}
+          {cart.length > 0 && (
+            <button
+              className="mb-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+              onClick={vaciarCarrito}
+            >
+              Vaciar Carrito
+            </button>
           )}
           <div className="mt-6 border-t pt-4 flex justify-between items-center">
             <span className="text-lg font-semibold text-gray-700">Total:</span>

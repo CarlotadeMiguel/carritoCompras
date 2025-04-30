@@ -16,6 +16,7 @@ const ELIMINAR_PRODUCTO = 'ELIMINAR_PRODUCTO';
 const AUMENTAR_CANTIDAD = 'AUMENTAR_CANTIDAD';
 const DISMINUIR_CANTIDAD = 'DISMINUIR_CANTIDAD';
 const OCULTAR_TOAST = 'OCULTAR_TOAST';
+const VACIAR_CARRITO = 'VACIAR_CARRITO';
 
 
 
@@ -69,6 +70,14 @@ const cartReducer = (state, action) => {
       };
     }
 
+    case VACIAR_CARRITO: {
+      return {
+        ...state,
+        cart: [],
+        toast: { show: true, message: '🧹 Carrito vaciado', type: 'success' }
+      };
+    }
+    
     case OCULTAR_TOAST: {
       return { ...state, toast: { ...state.toast, show: false } };
     }
