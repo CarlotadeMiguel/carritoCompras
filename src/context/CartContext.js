@@ -11,27 +11,39 @@ const initialState = JSON.parse(localStorage.getItem('carrito')) || [];
 // Definir las acciones
 const AGREGAR_PRODUCTO = 'AGREGAR_PRODUCTO';
 const ELIMINAR_PRODUCTO = 'ELIMINAR_PRODUCTO';
+const AUMENTAR_CANTIDAD = 'AUMENTAR_CANTIDAD';
+const DISMINUIR_CANTIDAD = 'DISMINUIR_CANTIDAD';
 
 // Reducer que gestionará las acciones
 const cartReducer = (state, action) => {
     switch (action.type) {
-      case 'AGREGAR_PRODUCTO':
-        // Buscar si el producto ya está en el carrito
+      case AGREGAR_PRODUCTO:
         const productoExistente = state.find(producto => producto.id === action.payload.id);
-        
         if (productoExistente) {
-          // Si ya existe, incrementamos la cantidad
           return state.map(producto =>
             producto.id === action.payload.id
               ? { ...producto, quantity: producto.quantity + 1 }
               : producto
           );
         } else {
-          // Si no existe, agregamos el producto con quantity: 1
           return [...state, { ...action.payload, quantity: 1 }];
         }
   
-      case 'ELIMINAR_PRODUCTO':
+      case AUMENTAR_CANTIDAD:
+        return state.map(producto =>
+          producto.id === action.payload.id
+            ? { ...producto, quantity: producto.quantity + 1 }
+            : producto
+        );
+  
+      case DISMINUIR_CANTIDAD:
+        return state.map(producto =>
+          producto.id === action.payload.id && producto.quantity > 1
+            ? { ...producto, quantity: producto.quantity - 1 }
+            : producto
+        );
+  
+      case ELIMINAR_PRODUCTO:
         return state.filter(producto => producto.id !== action.payload.id);
   
       default:
