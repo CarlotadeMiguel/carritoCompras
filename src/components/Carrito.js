@@ -24,7 +24,7 @@ const Carrito = () => {
   return (
     <>
       <button
-        className="fixed top-5 right-5 bg-orange-200 text-gray-800 border-none px-4 py-2 rounded-full cursor-pointer z-30 shadow-lg"
+        className="fixed top-5 right-5  bg-blue-500 text-gray-800 border-none px-4 py-2 rounded-full cursor-pointer z-30 shadow-lg"
         onClick={toggleCarrito}
       >
         {visible ? 'Ocultar carrito' : 'Mostrar carrito'}
