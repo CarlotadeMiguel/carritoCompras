@@ -14,19 +14,30 @@ const ELIMINAR_PRODUCTO = 'ELIMINAR_PRODUCTO';
 
 // Reducer que gestionará las acciones
 const cartReducer = (state, action) => {
-  switch (action.type) {
-    case AGREGAR_PRODUCTO:
-      // Agregar producto al carrito
-      return [...state, action.payload];
-    
-    case ELIMINAR_PRODUCTO:
-      // Eliminar producto del carrito
-      return state.filter(producto => producto.id !== action.payload.id);
-    
-    default:
-      return state;
-  }
-};
+    switch (action.type) {
+      case 'AGREGAR_PRODUCTO':
+        // Buscar si el producto ya está en el carrito
+        const productoExistente = state.find(producto => producto.id === action.payload.id);
+        
+        if (productoExistente) {
+          // Si ya existe, incrementamos la cantidad
+          return state.map(producto =>
+            producto.id === action.payload.id
+              ? { ...producto, quantity: producto.quantity + 1 }
+              : producto
+          );
+        } else {
+          // Si no existe, agregamos el producto con quantity: 1
+          return [...state, { ...action.payload, quantity: 1 }];
+        }
+  
+      case 'ELIMINAR_PRODUCTO':
+        return state.filter(producto => producto.id !== action.payload.id);
+  
+      default:
+        return state;
+    }
+  };
 
 // CartProvider que envolverá la app
 export const CartProvider = ({ children }) => {
